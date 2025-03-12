@@ -304,12 +304,17 @@ class TestSplitNodes(unittest.TestCase):
         )
 
     def test_split_img_only_imgs(self):
-        node = TextNode("![a logo](https://boot.dev/logo.gif)![and more](local.gif)", TextType.TEXT)
+        node = TextNode(
+            "![a logo](https://boot.dev/logo.gif)![and more](local.gif)", TextType.TEXT
+        )
         split = split_nodes_image([node])
-        self.assertEqual(split, [
-            TextNode("a logo", TextType.IMAGE, "https://boot.dev/logo.gif"),
-            TextNode("and more", TextType.IMAGE, "local.gif"),
-        ])
+        self.assertEqual(
+            split,
+            [
+                TextNode("a logo", TextType.IMAGE, "https://boot.dev/logo.gif"),
+                TextNode("and more", TextType.IMAGE, "local.gif"),
+            ],
+        )
 
     def test_split_img_more_text(self):
         node = TextNode(
@@ -330,13 +335,13 @@ class TestSplitNodes(unittest.TestCase):
         node = TextNode("This is just text", TextType.TEXT)
         split = split_nodes_image([node])
         self.assertEqual(
-            split, 
+            split,
             [
                 TextNode("This is just text", TextType.TEXT),
-            ]
+            ],
         )
 
-#fuckin links
+    # fuckin links
     def test_split_link1(self):
         node = TextNode("This has [a link](https://boot.dev/)", TextType.TEXT)
         split = split_nodes_link([node])
@@ -367,12 +372,17 @@ class TestSplitNodes(unittest.TestCase):
         )
 
     def test_split_link_only_links(self):
-        node = TextNode("[a link](https://boot.dev/logo.gif)[and link](local.gif)", TextType.TEXT)
+        node = TextNode(
+            "[a link](https://boot.dev/logo.gif)[and link](local.gif)", TextType.TEXT
+        )
         split = split_nodes_link([node])
-        self.assertEqual(split, [
-            TextNode("a link", TextType.LINK, "https://boot.dev/logo.gif"),
-            TextNode("and link", TextType.LINK, "local.gif"),
-        ])
+        self.assertEqual(
+            split,
+            [
+                TextNode("a link", TextType.LINK, "https://boot.dev/logo.gif"),
+                TextNode("and link", TextType.LINK, "local.gif"),
+            ],
+        )
 
     def test_split_link_more_text(self):
         node = TextNode(
@@ -393,50 +403,60 @@ class TestSplitNodes(unittest.TestCase):
         node = TextNode("This is just text", TextType.TEXT)
         split = split_nodes_link([node])
         self.assertEqual(
-            split, 
+            split,
             [
                 TextNode("This is just text", TextType.TEXT),
-            ]
+            ],
         )
+
 
 class TestTextToTextNodes(unittest.TestCase):
     def test_text_to_textnodes_default(self):
-        tn = text_to_textnodes("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
+        tn = text_to_textnodes(
+            "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        )
         self.assertEqual(
             tn,
             [
-                    TextNode("This is ", TextType.TEXT),
-                    TextNode("text", TextType.BOLD),
-                    TextNode(" with an ", TextType.TEXT),
-                    TextNode("italic", TextType.ITALIC),
-                    TextNode(" word and a ", TextType.TEXT),
-                    TextNode("code block", TextType.CODE),
-                    TextNode(" and an ", TextType.TEXT),
-                    TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-                    TextNode(" and a ", TextType.TEXT),
-                    TextNode("link", TextType.LINK, "https://boot.dev"),
-            ]
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode(
+                    "obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"
+                ),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
         )
 
     def test_text_to_textnodes_somethingelse(self):
-        tn = text_to_textnodes("This is text with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
+        tn = text_to_textnodes(
+            "This is text with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        )
         self.assertEqual(
             tn,
             [
-                    TextNode("This is text with an ", TextType.TEXT),
-                    TextNode("italic", TextType.ITALIC),
-                    TextNode(" word and a ", TextType.TEXT),
-                    TextNode("code block", TextType.CODE),
-                    TextNode(" and an ", TextType.TEXT),
-                    TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-                    TextNode(" and a ", TextType.TEXT),
-                    TextNode("link", TextType.LINK, "https://boot.dev"),
-            ]
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode(
+                    "obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"
+                ),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
         )
 
     def test_text_to_textnodes_bad(self):
         with self.assertRaises(Exception):
             text_to_textnodes("this has an '_' that somehow makes it bad")
-        
+
+
 if __name__ == "__main__":
     unittest.main()

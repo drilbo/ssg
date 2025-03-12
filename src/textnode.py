@@ -97,6 +97,7 @@ def split_nodes_image(old_nodes):
         new_nodes.extend(split_nodes)
     return new_nodes
 
+
 def split_nodes_link(old_nodes):
     new_nodes = []
     for n in old_nodes:
@@ -115,6 +116,7 @@ def split_nodes_link(old_nodes):
             split_nodes.append(TextNode(n.text, TextType.TEXT))
         new_nodes.extend(split_nodes)
     return new_nodes
+
 
 def text_to_textnodes(text):
     tn = TextNode(text, TextType.TEXT)
