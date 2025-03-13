@@ -1,10 +1,15 @@
 from textnode import TextNode, TextType
 from genpage import generate_page, generate_pages_recursive
-import os
-import shutil
+import os, shutil, sys
 
+if len(sys.argv) > 1:
+    basepath = sys.argv[1]
+else:
+    basepath = "/"
+
+print(f"!!!!!!!!!!!! {basepath} !!!!!!!!")
 dir_path_static = "./static"
-dir_path_public = "./public"
+dir_path_public = "./docs"
 dir_path_content = "./content"
 template_path = "./template.html"
 
@@ -15,6 +20,7 @@ def main():
         dir_path_content,
         template_path,
         dir_path_public,
+        basepath
     )
 def copy_static(src, dst):
     if not os.path.exists(src):
